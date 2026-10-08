@@ -9,7 +9,7 @@
 <meta property="og:image" content="images/photo2.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Gowun+Batang:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Gowun+Batang:wght@400;700&family=Great+Vibes&display=swap" rel="stylesheet">
 <style>
 :root{
   --bg:#f7f3ee; --paper:#fffdfa; --ink:#3b332d; --sub:#8a7f75; --line:#e6ded4;
@@ -35,10 +35,23 @@ section{padding:80px 28px;text-align:center}
 .cover{position:relative;overflow:hidden;padding:0;height:100svh;min-height:600px;max-height:900px;color:#fff}
 .cover img{width:100%;height:100%;transform-origin:center 30%;object-fit:cover;object-position:center 30%;animation:zoom 14s ease-out forwards}
 .cover::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.28) 0%,rgba(0,0,0,0) 30%,rgba(0,0,0,0) 55%,rgba(0,0,0,.5) 100%)}
-.cover .top{position:absolute;top:44px;left:0;right:0;z-index:1}
+.cover .top{position:absolute;top:36px;left:0;right:0;z-index:1}
 .cover .top .en{color:#fff;opacity:.9}
-.cover .date-big{font-family:'Cormorant Garamond',serif;font-size:46px;line-height:1;margin-top:10px;letter-spacing:.06em}
-.cover .bottom{position:absolute;bottom:56px;left:0;right:0;z-index:1}
+.cover .date-big{font-family:'Cormorant Garamond',serif;font-size:22px;line-height:1;margin-top:4px;letter-spacing:.3em}
+.letter{display:block;width:88%;margin:0 auto 14px;overflow:visible;filter:drop-shadow(0 2px 10px rgba(0,0,0,.25))}
+.letter text{font-family:'Great Vibes',cursive;font-size:76px;fill:rgba(255,255,255,0);stroke:#fff;stroke-width:1.1;stroke-dasharray:1400;stroke-dashoffset:1400}
+.cover.go .letter text{animation:write 3.6s ease-in-out forwards,fillin 1.4s 2.6s ease forwards}
+.letter{clip-path:inset(-30% 100% -30% -5%)}
+.cover.go .letter{animation:wipe 3.2s cubic-bezier(.45,.05,.55,.95) forwards}
+@keyframes wipe{to{clip-path:inset(-30% -5% -30% -5%)}}
+@keyframes write{to{stroke-dashoffset:0}}
+@keyframes fillin{to{fill:rgba(255,255,255,1);stroke-width:0}}
+.cover .date-big,.cover .scroll{opacity:0;transition:opacity 1.4s ease}
+.cover.go .date-big{opacity:1;transition-delay:3.2s}
+.cover .bottom .names,.cover .bottom .info{opacity:0;transition:opacity 1.4s ease 3.6s}
+.cover.go .bottom .names,.cover.go .bottom .info{opacity:1}
+.cover.go .scroll{opacity:1;transition-delay:4.4s}
+.cover .bottom{position:absolute;bottom:50px;left:0;right:0;z-index:1}
 .cover .names{font-size:22px;letter-spacing:.15em}
 .cover .names span{font-family:'Cormorant Garamond',serif;font-size:18px;margin:0 10px;opacity:.85}
 .cover .info{font-size:14px;margin-top:8px;opacity:.9}
@@ -153,10 +166,10 @@ footer{padding:30px 0 40px;text-align:center;font-size:11px;color:#bbb0a5;font-f
   <section class="cover">
     <img src="images/photo2.jpg" alt="신부 사진">
     <div class="top">
-      <p class="en">Wedding Day</p>
-      <p class="date-big">03 · 06</p>
+      <p class="date-big">2027 · 03 · 06</p>
     </div>
     <div class="bottom">
+      <svg class="letter" viewBox="0 0 420 120" aria-label="We're wedding"><text x="210" y="88" text-anchor="middle">We’re wedding</text></svg>
       <p class="names"><span id="cGroom"></span></p>
       <p class="info" id="cInfo"></p>
     </div>
@@ -334,6 +347,14 @@ function fmtTime(t){
 }
 const timeTxt = C.time ? fmtTime(C.time) : '시간 추후 안내';
 const venueTxt = C.venue || '장소 추후 안내';
+
+/* 커버 레터링: 폰트 로드 후 시작 */
+(function(){
+  const cover = $('.cover'); let done = false;
+  const go = ()=>{ if(!done){ done = true; cover.classList.add('go'); } };
+  if(document.fonts && document.fonts.load) document.fonts.load("76px 'Great Vibes'").then(go, go);
+  setTimeout(go, 1500);
+})();
 
 /* 커버 / 이름 */
 $('#cGroom').parentElement.innerHTML = `${G.name}<span>&amp;</span>${B.name}`;
