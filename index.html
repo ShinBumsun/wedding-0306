@@ -6,7 +6,9 @@
 <title>저희 결혼합니다</title>
 <meta property="og:title" content="저희 결혼합니다">
 <meta property="og:description" content="2027년 3월 6일 토요일">
-<meta property="og:image" content="images/photo2.jpg">
+<meta property="og:image" content="https://shinbumsun.github.io/wedding-0306/images/photo4.jpg">
+<meta property="og:url" content="https://shinbumsun.github.io/wedding-0306/">
+<meta property="og:type" content="website">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Gowun+Batang:wght@400;700&family=Great+Vibes&display=swap" rel="stylesheet">
@@ -39,11 +41,8 @@ section{padding:80px 28px;text-align:center}
 .cover .top .en{color:#fff;opacity:.9}
 .cover .date-big{font-family:'Cormorant Garamond',serif;font-size:22px;line-height:1;margin-top:4px;letter-spacing:.3em}
 .letter{display:block;width:88%;margin:0 auto 14px;overflow:visible;filter:drop-shadow(0 2px 10px rgba(0,0,0,.25))}
-.letter text{font-family:'Great Vibes',cursive;font-size:76px;fill:rgba(255,255,255,0);stroke:#fff;stroke-width:1.1;stroke-dasharray:1400;stroke-dashoffset:1400}
-.cover.go .letter text{animation:write 3.6s ease-in-out forwards,fillin 1.4s 2.6s ease forwards}
-.letter{clip-path:inset(-30% 100% -30% -5%)}
-.cover.go .letter{animation:wipe 3.2s cubic-bezier(.45,.05,.55,.95) forwards}
-@keyframes wipe{to{clip-path:inset(-30% -5% -30% -5%)}}
+.letter text{font-family:'Great Vibes',cursive;font-size:76px;fill:rgba(255,255,255,0);stroke:#fff;stroke-width:1.1;stroke-dasharray:900;stroke-dashoffset:900}
+.cover.go .letter text{animation:write 1s ease-in-out var(--d,0s) forwards,fillin .7s calc(var(--d,0s) + .45s) ease forwards}
 @keyframes write{to{stroke-dashoffset:0}}
 @keyframes fillin{to{fill:rgba(255,255,255,1);stroke-width:0}}
 .cover .date-big,.cover .scroll{opacity:0;transition:opacity 1.4s ease}
@@ -351,7 +350,22 @@ const venueTxt = C.venue || '장소 추후 안내';
 /* 커버 레터링: 폰트 로드 후 시작 */
 (function(){
   const cover = $('.cover'); let done = false;
-  const go = ()=>{ if(!done){ done = true; cover.classList.add('go'); } };
+  // 한 글자씩 따로 그려지도록 글자별 <text>로 분리
+  function split(){
+    const base = cover.querySelector('.letter text'), str = base.textContent;
+    let k = 0;
+    [...str].forEach((ch, i)=>{
+      if(ch === ' ') return;
+      const t = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+      t.setAttribute('x', base.getStartPositionOfChar(i).x);
+      t.setAttribute('y', base.getAttribute('y'));
+      t.style.setProperty('--d', (k++ * 0.17).toFixed(2) + 's');
+      t.textContent = ch;
+      base.parentNode.appendChild(t);
+    });
+    base.remove();
+  }
+  const go = ()=>{ if(done) return; done = true; try{ split(); }catch(e){} cover.classList.add('go'); };
   if(document.fonts && document.fonts.load) document.fonts.load("76px 'Great Vibes'").then(go, go);
   setTimeout(go, 1500);
 })();
