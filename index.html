@@ -298,9 +298,9 @@ footer{padding:30px 0 40px;text-align:center;font-size:11px;color:#bbb0a5;font-f
    ✏️ 여기만 수정하면 됩니다
    ================================================================ */
 const CONFIG = {
-  groom: { name: '신종민', phone: '' , father: '아버지', mother: '어머니', order: '장남',
+  groom: { name: '신종민', phone: '010-7466-6635', father: '아버지', mother: '어머니', order: '장남',
            fatherPhone: '', motherPhone: '' },
-  bride: { name: '김희연',  phone: '' , father: '아버지', mother: '어머니', order: '장녀',
+  bride: { name: '김희연',  phone: '010-8583-7316', father: '아버지', mother: '어머니', order: '장녀',
            fatherPhone: '', motherPhone: '' },
 
   date: '2027-03-06',      // 예식 날짜
@@ -311,8 +311,8 @@ const CONFIG = {
   mapQuery: '웨스틴 서울 파르나스', // 지도 검색어
 
   accounts: {
-    groom: [ { who: '신랑', name: '신종민', bank: '은행', num: '000-0000-0000' } ],
-    bride: [ { who: '신부', name: '김희연',   bank: '은행', num: '000-0000-0000' } ],
+    groom: [ { who: '신랑', name: '신종민', bank: '하나은행', num: '44191025819207' } ],
+    bride: [ { who: '신부', name: '김희연',   bank: '하나은행', num: '44191023949507' } ],
   },
 
   photos: ['images/photo4.jpg', 'images/photo2.jpg', 'images/photo5.jpg', 'images/photo1.jpg', 'images/photo3.jpg'],
@@ -438,7 +438,8 @@ $('#shareBtn').onclick = ()=>{
 
 /* 연락하기 */
 function cRow(role, name, phone){
-  const links = phone ? `<a href="tel:${phone}" aria-label="전화">📞</a><a href="sms:${phone}" aria-label="문자">✉️</a>` : '<small>번호 미등록</small>';
+  if(!phone) return '';
+  const links = `<a href="tel:${phone}" aria-label="전화">📞</a><a href="sms:${phone}" aria-label="문자">✉️</a>`;
   return `<div class="row"><span><small>${role}</small>${name}</span><span>${links}</span></div>`;
 }
 $('#contactList').innerHTML =
