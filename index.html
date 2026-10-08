@@ -104,6 +104,7 @@ section{padding:80px 28px;text-align:center}
 .venue{font-size:17px;margin-bottom:4px}
 .addr{font-size:14px;color:var(--sub)}
 .map-ph{margin:28px 0 20px;aspect-ratio:4/3;background:var(--bg);border:1px dashed var(--line);border-radius:6px;display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--sub);font-size:14px;gap:6px}
+.map-ph iframe{width:100%;height:100%;border:0;border-radius:6px}
 .map-ph svg{width:30px;height:30px;stroke:var(--accent)}
 .navs{display:flex;gap:8px}
 .navs a{flex:1;padding:11px 0;border:1px solid var(--line);border-radius:6px;font-size:13px;color:var(--ink);text-decoration:none}
@@ -305,8 +306,9 @@ const CONFIG = {
   date: '2027-03-06',      // 예식 날짜
   time: '',                // 예: '13:30'  (비워두면 "시간 추후 안내")
 
-  venue: '',               // 예: '더살롱 웨딩홀 1층 레터홀'  (비워두면 "장소 추후 안내")
-  address: '',             // 예: '서울 강남구 ...'
+  venue: '웨스틴 서울 파르나스',   // 예식장 이름 (홀 이름 정해지면 뒤에 추가)
+  address: '서울 강남구 봉은사로 524 지하 1층',
+  mapQuery: '웨스틴 서울 파르나스', // 지도 검색어
 
   accounts: {
     groom: [ { who: '신랑', name: '신종민', bank: '은행', num: '000-0000-0000' } ],
@@ -393,8 +395,9 @@ document.addEventListener('keydown', e=>{ if(!lb.classList.contains('open')) ret
 $('#venue').textContent = venueTxt;
 $('#addr').textContent = C.address;
 if(C.address){
-  const q = encodeURIComponent(C.address);
-  $('#mapBox').querySelector('span').textContent = '아래 버튼으로 지도를 열어주세요';
+  const q = encodeURIComponent(C.mapQuery || C.address);
+  $('#mapBox').innerHTML = `<iframe src="https://maps.google.com/maps?q=${q}&hl=ko&z=16&output=embed" loading="lazy" title="지도"></iframe>`;
+  $('#mapBox').style.border = '0';
   $('#nNaver').href = `https://map.naver.com/p/search/${q}`;
   $('#nKakao').href = `https://map.kakao.com/link/search/${q}`;
   $('#nTmap').href  = `https://tmap.life/search?name=${q}`;
