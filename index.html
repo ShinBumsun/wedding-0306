@@ -153,9 +153,9 @@ footer{padding:30px 0 40px;text-align:center;font-size:11px;color:#bbb0a5;font-f
 .sheet .close{display:block;width:100%;margin-top:22px;padding:13px;border-radius:8px;background:var(--bg);font-size:14px}
 
 /* RSVP */
-.rsvp-desc{font-size:14px;color:var(--sub);line-height:2;margin-bottom:28px}
-.btn-main{display:inline-block;padding:14px 40px;border-radius:30px;background:var(--accent);color:#fff;font-size:14px;letter-spacing:.05em}
-.btn-main:active{opacity:.85}
+.fab{position:fixed;z-index:30;bottom:20px;right:max(16px,calc(50% - 215px + 16px));display:flex;align-items:center;gap:6px;padding:11px 18px;border-radius:30px;background:var(--accent);color:#fff;font-size:13px;box-shadow:0 4px 14px rgba(0,0,0,.18);opacity:0;transform:translateY(12px);pointer-events:none;transition:opacity .4s,transform .4s}
+.fab.on{opacity:1;transform:none;pointer-events:auto}
+.fab:active{opacity:.85}
 .modal.center{align-items:center;padding:20px}
 .pop{position:relative;border-radius:14px;max-height:88vh;overflow-y:auto;text-align:left;animation:pop .3s ease}
 @keyframes pop{from{opacity:0;transform:scale(.96)}to{opacity:1;transform:none}}
@@ -292,16 +292,6 @@ footer{padding:30px 0 40px;text-align:center;font-size:11px;color:#bbb0a5;font-f
     </div>
   </section>
 
-  <!-- 참석 의사 전달 -->
-  <section>
-    <div class="reveal">
-      <p class="en">R.S.V.P.</p>
-      <h2 class="ttl">참석 의사 전달</h2>
-      <p class="rsvp-desc">축하의 마음으로 참석해주시는<br>모든 분들을 귀하게 모실 수 있도록<br>참석 여부를 미리 알려주시면 감사하겠습니다.</p>
-      <button class="btn-main" id="openRsvp">참석 의사 전달하기</button>
-    </div>
-  </section>
-
   <!-- 마음 전하실 곳 -->
   <section class="alt">
     <div class="reveal">
@@ -401,6 +391,8 @@ footer{padding:30px 0 40px;text-align:center;font-size:11px;color:#bbb0a5;font-f
     <button class="today" id="rsvpToday">오늘하루 보지않기</button>
   </div>
 </div>
+
+<button class="fab" id="openRsvp">✉ 참석 여부 전달</button>
 
 <div class="toast" id="toast"></div>
 
@@ -596,6 +588,9 @@ $('#contact').addEventListener('click', e=>{ if(e.target.id === 'contact') e.tar
   const openNotice = ()=>{ notice.classList.add('open'); document.body.style.overflow = 'hidden'; };
   const closeNotice = ()=>{ notice.classList.remove('open'); document.body.style.overflow = ''; };
   $('#openRsvp').onclick = open;
+  const fab = $('#openRsvp'), cover = $('.cover');
+  const fabToggle = ()=>fab.classList.toggle('on', window.scrollY > cover.offsetHeight * 0.6);
+  addEventListener('scroll', fabToggle, { passive: true }); fabToggle();
   $('#closeRsvp').onclick = close;
   modal.addEventListener('click', e=>{ if(e.target === modal) close(); });
   $('#closeNotice').onclick = closeNotice;
