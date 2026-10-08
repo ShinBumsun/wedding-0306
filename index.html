@@ -113,8 +113,8 @@ section{padding:80px 28px;text-align:center}
 .acc-desc{font-size:14px;color:var(--sub);margin-bottom:28px}
 .acc{border:1px solid var(--line);border-radius:8px;margin-bottom:10px;text-align:left;overflow:hidden;background:var(--paper)}
 .acc>button{width:100%;display:flex;justify-content:space-between;align-items:center;padding:15px 18px;font-size:15px}
-.acc>button i{font-style:normal;transition:transform .3s;color:var(--sub)}
-.acc.open>button i{transform:rotate(180deg)}
+.acc>button i{flex:none;width:8px;height:8px;border-right:1.5px solid var(--sub);border-bottom:1.5px solid var(--sub);transform:translateY(-2px) rotate(45deg);transition:transform .3s}
+.acc.open>button i{transform:translateY(2px) rotate(-135deg)}
 .acc .body{max-height:0;overflow:hidden;transition:max-height .4s ease}
 .acc .row{display:flex;justify-content:space-between;align-items:center;padding:14px 18px;border-top:1px solid var(--line);font-size:14px}
 .acc .row small{display:block;color:var(--sub);font-size:12px}
@@ -410,7 +410,7 @@ if(C.address){
 /* 계좌 */
 $('#accs').innerHTML = [['groom','신랑측'],['bride','신부측']].map(([k,label])=>`
   <div class="acc">
-    <button>${label} 계좌번호<i>⌄</i></button>
+    <button>${label} 계좌번호<i></i></button>
     <div class="body">${C.accounts[k].map(a=>`
       <div class="row"><div><small>${a.who} ${a.name}</small>${a.bank} ${a.num}</div>
       <button class="btn" data-copy="${a.bank} ${a.num}">복사</button></div>`).join('')}
